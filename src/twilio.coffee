@@ -11,16 +11,14 @@ class Twilio extends Adapter
     @robot = robot
     super robot
 
-  send: (user, strings...) ->
+  send: (envelope, strings...) ->
     message = strings.join "\n"
     
-    console.log "Sending reply SMS to #{user.user.id}"
-
-    @send_sms message, user.id, (err, body) ->
+    @send_sms message, envelope.user.id, (err, body) ->
        if err or not body?
         console.log "Error sending reply SMS: #{err}"
        else
-        console.log "Sending reply SMS: #{message} to #{user.id}"
+        console.log "Sending reply SMS: #{message} to #{envelope.user.id}"
         
 
   reply: (user, strings...) ->
@@ -59,9 +57,9 @@ class Twilio extends Adapter
     auth = new Buffer(@sid + ':' + @token).toString("base64")
     data = QS.stringify From: @from, To: to, Body: message
 
-    @robot.http("https://#{@sid}:#{@token}@api.twilio.com")
+    @robot.http("https://api.twilio.com")
       .path("/2010-04-01/Accounts/#{@sid}/Messages.json")
-      #.header("Authorization", "Basic #{auth}")
+      .header("Authorization", "Basic #{auth}")
       .header("Content-Type", "application/x-www-form-urlencoded")
       .post(data) (err, res, body) ->
         if err
