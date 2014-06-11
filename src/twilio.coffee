@@ -21,8 +21,8 @@ class Twilio extends Adapter
         console.log "Sending reply SMS: #{message} to #{envelope.user.id}"
         
 
-  reply: (user, strings...) ->
-    @send user, str for str in strings
+  reply: (envelope, strings...) ->
+    @send envelope, str for str in strings
 
   respond: (regex, callback) ->
     @hear regex, callback
