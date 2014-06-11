@@ -44,7 +44,7 @@ class Twilio extends Adapter
 
   receive_sms: (body, from) ->
     return if body.length is 0
-    user = @robot.brain.userForId() from
+    user = @robot.brain.userForId from
 
 		# TODO Assign self.robot.name here instead of 
     # if body.match(/^Nurph\b/i) is null
